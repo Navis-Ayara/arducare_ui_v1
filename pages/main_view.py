@@ -13,6 +13,7 @@ class MainView(ft.View):
         self.padding = ft.padding.only(left=10, right=10)
 
         self.drawer = ft.NavigationDrawer(
+            tile_padding=10,
             controls=[
                 ft.NavigationDrawerDestination(
                     icon=ft.icons.AUTO_GRAPH,
