@@ -5,6 +5,8 @@ import pages.session_view
 
 
 def main(page: ft.Page):
+    page.title = "Arducare UI"
+
     page.fonts = {
         "Onest": "./fonts/Onest.ttf"
     }
@@ -64,7 +66,7 @@ def main(page: ft.Page):
     page.on_route_change = on_route_change
     page.on_view_pop = on_view_pop
 
-    page.go("/")
+    page.go("/data_stream_vew")
 
 
 ft.app(main)
