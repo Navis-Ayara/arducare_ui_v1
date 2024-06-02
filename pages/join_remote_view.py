@@ -15,14 +15,24 @@ class RemoteSessionView(ft.View):
             
         )
 
+    def on_submit(self, e):
+        self.page.go("/data_stream_view")
+
     def build(self):
+        self.page.pubsub.subscribe_topic(
+            topic="/data_stream_view",
+            handler=self.on_submit
+        )
+
         self.controls = [
             ft.Column([
                 ft.TextField(
                     border_radius=14,
                     label="Enter session link",
                     border_color=ft.colors.SECONDARY_CONTAINER,
-                    max_length=8
+                    max_length=16,
+                    capitalization=ft.TextCapitalization.CHARACTERS,
+                    on_submit=self.on_submit
                 )
             ])
         ]

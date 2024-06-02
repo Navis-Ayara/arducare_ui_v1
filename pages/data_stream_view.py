@@ -31,7 +31,7 @@ class DataStreamView(ft.View):
         )
 
     def build(self):
-        self.session_number = self.page.client_storage.get("session_number")
+        # self.session_number = self.page.client_storage.get("session_number")
         
         self.appbar = ft.AppBar(
             title=ft.Text(

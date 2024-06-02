@@ -13,8 +13,8 @@ class MainView(ft.View):
         self.scroll = ft.ScrollMode.ALWAYS
         self.padding = ft.padding.only(left=10, right=10)
 
-
-        self.username = self.page.client_storage.get("username")
+        self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+        self.vertical_alignment = ft.MainAxisAlignment.CENTER
 
         self.drawer = ft.NavigationDrawer(
             on_change=self.navigate,
