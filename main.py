@@ -1,7 +1,11 @@
 import flet as ft
+
 import pages.data_stream_view
+import pages.join_remote_view
 import pages.main_view
 import pages.session_view
+import pages.settings
+import pages.summary_view
 
 
 def main(page: ft.Page):
@@ -53,6 +57,20 @@ def main(page: ft.Page):
             page.views.append(
                 pages.data_stream_view.DataStreamView(page)
             )
+        elif page.route == "/join_remote_session":
+            page.views.append(
+                pages.join_remote_view.RemoteSessionView(page)
+            )
+
+        elif page.route == "/summary_view":
+            page.views.append(
+                pages.summary_view.SummaryView(page)
+            )
+
+        elif page.route == "/settings":
+            page.views.append(
+                pages.settings.Settings(page)
+            )
 
         page.update()
 
@@ -66,7 +84,7 @@ def main(page: ft.Page):
     page.on_route_change = on_route_change
     page.on_view_pop = on_view_pop
 
-    page.go("/data_stream_vew")
+    page.go("/")
 
 
 ft.app(main)
