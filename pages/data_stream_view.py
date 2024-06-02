@@ -1,19 +1,41 @@
 import flet as ft
+import threading
 
 class DataStreamView(ft.View):
     def __init__(self, page: ft.Page):
         super().__init__()
 
-        self.page = page
         self.route = "/data_stream_view"
 
+        self.page = page
+        
         self.scroll = ft.ScrollMode.ALWAYS
         self.padding = ft.padding.only(left=10, right=10)
 
+        self.multiscope_status = ft.Text(
+            color=ft.colors.ERROR,
+            value="offline"
+        )
+        self.status_indicator = ft.Icon(
+            name=ft.icons.CIRCLE,
+            color=ft.colors.ERROR,
+            size=14
+        )
+        self.not_measuring_indicator = ft.Text(
+            value="not measuring... place finger on sensor",
+            color=ft.colors.ERROR,
+        )
+        self._not_measuring_indicator = ft.Text(
+            value="not measuring... point device on left temple",
+            color=ft.colors.ERROR
+        )
+
     def build(self):
+        self.session_number = self.page.client_storage.get("session_number")
+        
         self.appbar = ft.AppBar(
             title=ft.Text(
-                "Session #23"
+                f"Session #{self.session_number}"
             ),
             center_title=True
         )
@@ -24,15 +46,8 @@ class DataStreamView(ft.View):
                     value="Multiscope status: "
                 ),
                 ft.Row([
-                    ft.Text(
-                        color=ft.colors.ERROR,
-                        value="offline"
-                    ),
-                    ft.Icon(
-                        name=ft.icons.CIRCLE,
-                        color=ft.colors.ERROR,
-                        size=14
-                    )
+                    self.multiscope_status,
+                    self.status_indicator
                 ])
             ], spacing=0),
             ft.Column([
@@ -46,10 +61,7 @@ class DataStreamView(ft.View):
                         name=ft.icons.FAVORITE_ROUNDED
                     )
                 ]),
-                ft.Text(
-                    value="not measuring... place finger on sensor",
-                    color=ft.colors.ERROR
-                )
+                self.not_measuring_indicator
             ], spacing=0),
             ft.Container(
                 height=250,
@@ -67,10 +79,7 @@ class DataStreamView(ft.View):
                         name=ft.icons.BLOODTYPE_ROUNDED
                     )
                 ]),
-                ft.Text(
-                    value="not measuring... place finger on sensor",
-                    color=ft.colors.ERROR
-                )
+                self.not_measuring_indicator
             ], spacing=0),
             ft.Container(
                 height=250,
@@ -88,10 +97,7 @@ class DataStreamView(ft.View):
                         name=ft.icons.HEAT_PUMP
                     )
                 ]),
-                ft.Text(
-                    value="not measuring... point device on left temple",
-                    color=ft.colors.ERROR
-                )
+                self._not_measuring_indicator
             ], spacing=0),
             ft.Container(
                 height=250,
