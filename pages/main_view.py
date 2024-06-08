@@ -13,9 +13,6 @@ class MainView(ft.View):
         self.scroll = ft.ScrollMode.ALWAYS
         self.padding = ft.padding.only(left=10, right=10)
 
-        self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-        self.vertical_alignment = ft.MainAxisAlignment.CENTER
-
         self.drawer = ft.NavigationDrawer(
             on_change=self.navigate,
             tile_padding=10,
@@ -40,7 +37,7 @@ class MainView(ft.View):
                 on_click=self.open_drawer
             ),
             title=ft.Text(
-                value=f"Hello, {self.username}",
+                value="Hello",
             ),
             actions=[
                 ft.Container(
@@ -119,10 +116,112 @@ class MainView(ft.View):
 
         self.controls = [
             ft.Container(
-                content=ft.Text(
-                    value="No sessions yet\nClick the '+' to start a new one",
-                    text_align=ft.TextAlign.CENTER
-                )
+                expand=True,
+                content=ft.Column([
+                    ft.Text(
+                        value="Dashboard",
+                        size=28,
+                        weight=ft.FontWeight.W_600
+                    ),
+                    ft.Row([
+                        ft.Container(
+                            expand=True,
+                            height=200,
+                            bgcolor="#B8C9FF",
+                            border_radius=24,
+                            padding=20,
+                            on_click=self.open_record,
+                            content=ft.Column([
+                                ft.Icon(
+                                    name=ft.icons.FAVORITE,
+                                    size=52
+                                ),
+                                ft.Column([
+                                    ft.Text(
+                                        value="Heart Rate",
+                                        size=21,
+                                        weight=ft.FontWeight.BOLD
+                                    ),
+                                    ft.Text(
+                                        value="80 bpm"
+                                    )
+                                ], spacing=0)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ),
+                        ft.Container(
+                            expand=True,
+                            height=200,
+                            bgcolor="#BBEAFE",
+                            border_radius=24,
+                            on_click=self.open_record,
+                            padding=20,
+                            content=ft.Column([
+                                ft.Icon(
+                                    name=ft.icons.BLOODTYPE,
+                                    size=52
+                                ),
+                                ft.Column([
+                                    ft.Text(
+                                        value="Blood Pressure",
+                                        size=21,
+                                        weight=ft.FontWeight.BOLD
+                                    ),
+                                    ft.Text(
+                                        value="12080 mmHG"
+                                    )
+                                ], spacing=0)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ),
+                        ft.Container(
+                            expand=True,
+                            height=200,
+                            bgcolor="#F4C6FF",
+                            on_click=self.open_record,
+                            border_radius=24,
+                            padding=20,
+                            content=ft.Column([
+                                ft.Icon(
+                                    name=ft.icons.HEAT_PUMP,
+                                    size=52
+                                ),
+                                ft.Column([
+                                    ft.Text(
+                                        value="Temperature",
+                                        size=21,
+                                        weight=ft.FontWeight.BOLD
+                                    ),
+                                    ft.Text(
+                                        value="37°"
+                                    )
+                                ], spacing=0)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ),
+                        ft.Container(
+                            expand=True,
+                            height=200,
+                            bgcolor="#FEB46A",
+                            border_radius=24,
+                            padding=20,
+                            on_click=self.open_record,
+                            content=ft.Column([
+                                ft.Icon(
+                                    name=ft.icons.CO2,
+                                    size=52
+                                ),
+                                ft.Column([
+                                    ft.Text(
+                                        value="Blood Oxygen",
+                                        size=21,
+                                        weight=ft.FontWeight.BOLD
+                                    ),
+                                    ft.Text(
+                                        value="__"
+                                    )
+                                ], spacing=0)
+                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        )
+                    ]),
+                ]),
             )
         ]
 
@@ -131,3 +230,14 @@ class MainView(ft.View):
             self.page.go("/data_stream_view")
         else:
             self.page.go("/join_remote_session")
+
+    def open_record(self, e):
+        match e.control.content.controls[1].controls[0].value:
+            case "Blood Oxygen":
+                self.page.go("/session_view")
+            case "Heart Rate":
+                self.page.go("/session_view")
+            case "Temperature":
+                self.page.go("/session_view")
+            case "Blood Pressure":
+                self.page.go("/session_view")
