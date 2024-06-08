@@ -15,7 +15,13 @@ def main(page: ft.Page):
         "Onest": "./fonts/Onest.ttf"
     }
 
+    page.window_full_screen = True
+
     page.theme = ft.Theme(
+        color_scheme_seed="#255CFF",
+        color_scheme=ft.ColorScheme(
+            primary="#255CFF",
+        ),
         page_transitions=ft.PageTransitionsTheme(
             windows=ft.PageTransitionTheme.FADE_UPWARDS
         ),
@@ -61,7 +67,6 @@ def main(page: ft.Page):
             page.views.append(
                 pages.join_remote_view.RemoteSessionView(page)
             )
-
         elif page.route == "/summary_view":
             page.views.append(
                 pages.summary_view.SummaryView(page)
