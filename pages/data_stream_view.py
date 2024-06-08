@@ -35,7 +35,7 @@ class DataStreamView(ft.View):
         
         self.appbar = ft.AppBar(
             title=ft.Text(
-                f"Session #{self.session_number}"
+                f"Session"
             ),
             center_title=True
         )
