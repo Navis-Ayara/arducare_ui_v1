@@ -1,4 +1,5 @@
 import flet as ft
+import json
 
 import pages.data_stream_view
 import pages.join_remote_view
@@ -11,11 +12,16 @@ import pages.summary_view
 def main(page: ft.Page):
     page.title = "Arducare UI"
 
+    page.window_full_screen = False
+
+    with open("utils/settings.json", "r") as settings_file:
+        settings = json.loads("".join(settings_file.readlines()))
+
+        page.theme_mode = settings["theme"].upper()
+
     page.fonts = {
         "Onest": "./fonts/Onest.ttf"
     }
-
-    page.window_full_screen = True
 
     page.theme = ft.Theme(
         color_scheme_seed="#255CFF",
@@ -44,9 +50,10 @@ def main(page: ft.Page):
             )
         )
     )
+
+    
     def on_route_change(route):
         page.views.clear()
-
         page.views.append(
             pages.main_view.MainView(page)
         )
@@ -71,13 +78,22 @@ def main(page: ft.Page):
             page.views.append(
                 pages.summary_view.SummaryView(page)
             )
-
         elif page.route == "/settings":
             page.views.append(
                 pages.settings.Settings(page)
             )
 
         page.update()
+
+
+    
+    def on_keyboard(e: ft.KeyboardEvent):
+        match e.key:
+            case "F11":
+                page.window_full_screen = True if page.window_full_screen == False else False
+
+        page.update()
+
 
     def on_view_pop(e):
         page.views.pop()
@@ -88,8 +104,9 @@ def main(page: ft.Page):
 
     page.on_route_change = on_route_change
     page.on_view_pop = on_view_pop
+    page.on_keyboard_event = on_keyboard
 
-    page.go("/")
+    page.go("/settings")
 
 
 ft.app(main)
