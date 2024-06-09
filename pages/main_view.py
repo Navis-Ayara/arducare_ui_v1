@@ -20,10 +20,6 @@ class MainView(ft.View):
             indicator_color=ft.colors.TRANSPARENT,
             controls=[
                 ft.NavigationDrawerDestination(
-                    icon=ft.icons.AUTO_GRAPH,
-                    label="Monthly Summary"
-                ),
-                ft.NavigationDrawerDestination(
                     icon=ft.icons.SETTINGS_ROUNDED,
                     label="Settings"
                 )
@@ -62,8 +58,6 @@ class MainView(ft.View):
     def navigate(self, e):
         match e.control.selected_index:
             case 0:
-                self.page.go("/summary_view")
-            case 1:
                 self.page.go("/settings")
 
     def open_drawer(self, e):
@@ -82,18 +76,21 @@ class MainView(ft.View):
             title=ft.Text(
                 value="Start a new session"
             ),
-            content=ft.RadioGroup(
-                value="Personal session",
-                content=ft.Column([
-                    ft.Radio(
-                        label="Personal session",
-                        value="Personal session",
-                    ),
-                    ft.Radio(
-                        label="Remote session",
-                        value="Remote session"
+            content=ft.Container(
+                height=150,
+                content=ft.RadioGroup(
+                    value="Personal session",
+                    content=ft.Column([
+                            ft.Radio(
+                                label="Personal session",
+                                value="Personal session",
+                            ),
+                            ft.Radio(
+                                label="Remote session",
+                                value="Remote session"
+                            )
+                        ], expand_loose=True)
                     )
-                ], expand_loose=True)
             ),
             actions=[
                 ft.OutlinedButton(
@@ -121,7 +118,7 @@ class MainView(ft.View):
                     ft.Text(
                         value="Dashboard",
                         size=28,
-                        weight=ft.FontWeight.W_600
+                        weight=ft.FontWeight.W_600,
                     ),
                     ft.Row([
                         ft.Container(
@@ -140,10 +137,12 @@ class MainView(ft.View):
                                     ft.Text(
                                         value="Heart Rate",
                                         size=21,
-                                        weight=ft.FontWeight.BOLD
+                                        weight=ft.FontWeight.BOLD,
+                                        color=ft.colors.BLACK
                                     ),
                                     ft.Text(
-                                        value="80 bpm"
+                                        value="80 bpm",
+                                        color=ft.colors.BLACK
                                     )
                                 ], spacing=0)
                             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
@@ -158,16 +157,19 @@ class MainView(ft.View):
                             content=ft.Column([
                                 ft.Icon(
                                     name=ft.icons.BLOODTYPE,
-                                    size=52
+                                    size=52,
+                                    color=ft.colors.RED_900
                                 ),
                                 ft.Column([
                                     ft.Text(
                                         value="Blood Pressure",
                                         size=21,
-                                        weight=ft.FontWeight.BOLD
+                                        weight=ft.FontWeight.BOLD,
+                                        color=ft.colors.BLACK
                                     ),
                                     ft.Text(
-                                        value="12080 mmHG"
+                                        value="12080 mmHG",
+                                        color=ft.colors.BLACK
                                     )
                                 ], spacing=0)
                             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
@@ -188,10 +190,12 @@ class MainView(ft.View):
                                     ft.Text(
                                         value="Temperature",
                                         size=21,
-                                        weight=ft.FontWeight.BOLD
+                                        weight=ft.FontWeight.BOLD,
+                                        color=ft.colors.BLACK
                                     ),
                                     ft.Text(
-                                        value="37°"
+                                        value="37°",
+                                        color=ft.colors.BLACK
                                     )
                                 ], spacing=0)
                             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
@@ -212,26 +216,35 @@ class MainView(ft.View):
                                     ft.Text(
                                         value="Blood Oxygen",
                                         size=21,
-                                        weight=ft.FontWeight.BOLD
+                                        weight=ft.FontWeight.BOLD,
+                                        color=ft.colors.BLACK
                                     ),
                                     ft.Text(
-                                        value="__"
+                                        value="__",
+                                        color=ft.colors.BLACK
                                     )
                                 ], spacing=0)
                             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
                         )
                     ]),
+                    ft.Container(
+                        height=self.page.window_height%2,
+                        width=self.page.window_width,
+                        bgcolor=ft.colors.RED
+                    )
                 ]),
             )
         ]
 
+
     def open_new_session(self, e):
-        if self.dlg.content.value.upper() == "PERSONAL SESSION":
+        if self.dlg.content.content.value.upper() == "PERSONAL SESSION":
             self.page.go("/data_stream_view")
         else:
             self.page.go("/join_remote_session")
+            
 
-    def open_record(self, e):
+    def open_record(self, e: ft.ContainerTapEvent):
         match e.control.content.controls[1].controls[0].value:
             case "Blood Oxygen":
                 self.page.go("/session_view")
@@ -241,3 +254,6 @@ class MainView(ft.View):
                 self.page.go("/session_view")
             case "Blood Pressure":
                 self.page.go("/session_view")
+
+    
+    
