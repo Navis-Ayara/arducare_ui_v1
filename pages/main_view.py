@@ -13,6 +13,29 @@ class MainView(ft.View):
         self.scroll = ft.ScrollMode.ALWAYS
         self.padding = ft.padding.only(left=10, right=10)
 
+
+    def open_new_session_dialog(self, e):
+        self.page.overlay.append(self.dlg)
+        self.dlg.open = True
+
+        self.page.update()
+
+    def navigate(self, e):
+        match e.control.selected_index:
+            case 0:
+                self.page.go("/settings")
+
+    def open_drawer(self, e):
+        self.drawer.open = True
+
+        self.page.update()
+
+    def close_drawer(self, e):
+        self.dlg.open = False
+        
+        self.page.update()
+
+    def build(self):
         self.drawer = ft.NavigationDrawer(
             on_change=self.navigate,
             tile_padding=10,
@@ -49,28 +72,6 @@ class MainView(ft.View):
             ]
         )
 
-    def open_new_session_dialog(self, e):
-        self.page.overlay.append(self.dlg)
-        self.dlg.open = True
-
-        self.page.update()
-
-    def navigate(self, e):
-        match e.control.selected_index:
-            case 0:
-                self.page.go("/settings")
-
-    def open_drawer(self, e):
-        self.drawer.open = True
-
-        self.page.update()
-
-    def close_drawer(self, e):
-        self.dlg.open = False
-        
-        self.page.update()
-
-    def build(self):
         self.dlg = ft.AlertDialog(
             modal=True,
             title=ft.Text(
@@ -120,118 +121,80 @@ class MainView(ft.View):
                         size=28,
                         weight=ft.FontWeight.W_600,
                     ),
-                    ft.Row([
-                        ft.Container(
-                            expand=True,
-                            height=200,
-                            bgcolor="#B8C9FF",
-                            border_radius=24,
-                            padding=20,
-                            on_click=self.open_record,
-                            content=ft.Column([
-                                ft.Icon(
-                                    name=ft.icons.FAVORITE,
-                                    size=52
-                                ),
-                                ft.Column([
-                                    ft.Text(
-                                        value="Heart Rate",
-                                        size=21,
-                                        weight=ft.FontWeight.BOLD,
-                                        color=ft.colors.BLACK
-                                    ),
-                                    ft.Text(
-                                        value="80 bpm",
-                                        color=ft.colors.BLACK
-                                    )
-                                ], spacing=0)
-                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                    ft.Column([
+                        ft.ListTile(
+                            trailing=ft.Text(
+                                value="Yesterday"
+                            ),
+                            leading=ft.Image(
+                                src="icons/heart-rate.svg",
+                                color=ft.colors.ON_BACKGROUND,
+                                fit=ft.ImageFit.COVER
+                            ),
+                            title=ft.Text(
+                                value="Heart Rate (ECG)"
+                            ),
+                            subtitle=ft.Text(
+                                value="Some past data here"
+                            ),
+                            on_click=lambda _: print("Works"),
+                            height=120
                         ),
-                        ft.Container(
-                            expand=True,
-                            height=200,
-                            bgcolor="#BBEAFE",
-                            border_radius=24,
-                            on_click=self.open_record,
-                            padding=20,
-                            content=ft.Column([
-                                ft.Icon(
-                                    name=ft.icons.BLOODTYPE,
-                                    size=52,
-                                    color=ft.colors.RED_900
-                                ),
-                                ft.Column([
-                                    ft.Text(
-                                        value="Blood Pressure",
-                                        size=21,
-                                        weight=ft.FontWeight.BOLD,
-                                        color=ft.colors.BLACK
-                                    ),
-                                    ft.Text(
-                                        value="12080 mmHG",
-                                        color=ft.colors.BLACK
-                                    )
-                                ], spacing=0)
-                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ft.ListTile(
+                            trailing=ft.Text(
+                                value="Yesterday"
+                            ),
+                            leading=ft.Image(
+                                src="icons/stethoscope.svg",
+                                color=ft.colors.ON_BACKGROUND,
+                                fit=ft.ImageFit.COVER
+                            ),
+                            title=ft.Text(
+                                value="Stethoscope Sounds"
+                            ),
+                            subtitle=ft.Text(
+                                value=f"{str(0)} Sounds"
+                            ),
+                            on_click=lambda _: print("Works"),
+                            height=120
                         ),
-                        ft.Container(
-                            expand=True,
-                            height=200,
-                            bgcolor="#F4C6FF",
-                            on_click=self.open_record,
-                            border_radius=24,
-                            padding=20,
-                            content=ft.Column([
-                                ft.Icon(
-                                    name=ft.icons.HEAT_PUMP,
-                                    size=52
-                                ),
-                                ft.Column([
-                                    ft.Text(
-                                        value="Temperature",
-                                        size=21,
-                                        weight=ft.FontWeight.BOLD,
-                                        color=ft.colors.BLACK
-                                    ),
-                                    ft.Text(
-                                        value="37°",
-                                        color=ft.colors.BLACK
-                                    )
-                                ], spacing=0)
-                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ft.ListTile(
+                            trailing=ft.Text(
+                                value="Yesterday"
+                            ),
+                            leading=ft.Image(
+                                src="icons/thermometer.svg",
+                                color=ft.colors.ON_BACKGROUND,
+                                fit=ft.ImageFit.COVER
+                            ),
+                            title=ft.Text(
+                                value="Temperature"
+                            ),
+                            subtitle=ft.Text(
+                                value="Some past data here"
+                            ),
+                            on_click=lambda _: print("Works"),
+                            height=120
                         ),
-                        ft.Container(
-                            expand=True,
-                            height=200,
-                            bgcolor="#FEB46A",
-                            border_radius=24,
-                            padding=20,
-                            on_click=self.open_record,
-                            content=ft.Column([
-                                ft.Icon(
-                                    name=ft.icons.CO2,
-                                    size=52
-                                ),
-                                ft.Column([
-                                    ft.Text(
-                                        value="Blood Oxygen",
-                                        size=21,
-                                        weight=ft.FontWeight.BOLD,
-                                        color=ft.colors.BLACK
-                                    ),
-                                    ft.Text(
-                                        value="__",
-                                        color=ft.colors.BLACK
-                                    )
-                                ], spacing=0)
-                            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                        ft.ListTile(
+                            trailing=ft.Text(
+                                value="Yesterday"
+                            ),
+                            leading=ft.Image(
+                                src="icons/blood.svg",
+                                color=ft.colors.ON_BACKGROUND,
+                                fit=ft.ImageFit.COVER
+                            ),
+                            title=ft.Text(
+                                value="Blood Oxygen"
+                            ),
+                            subtitle=ft.Text(
+                                value="Some past data here"
+                            ),
+                            on_click=lambda _: print("Works"),
+                            height=120
                         )
-                    ]),
-                    ft.Container(
-                        height=self.page.window_height%2,
-                        width=self.page.window_width,
-                        bgcolor=ft.colors.RED
-                    )
+                    ])
                 ]),
             )
         ]
