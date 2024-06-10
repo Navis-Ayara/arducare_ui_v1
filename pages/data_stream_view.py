@@ -25,10 +25,6 @@ class DataStreamView(ft.View):
             value="not measuring... place finger on sensor",
             color=ft.colors.ERROR,
         )
-        self._not_measuring_indicator = ft.Text(
-            value="not measuring... point device on left temple",
-            color=ft.colors.ERROR
-        )
 
     def build(self):
         self.appbar = ft.AppBar(
@@ -39,67 +35,5 @@ class DataStreamView(ft.View):
         )
 
         self.controls = [
-            ft.Row([
-                ft.Text(
-                    value="Multiscope status: "
-                ),
-                ft.Row([
-                    self.multiscope_status,
-                    self.status_indicator
-                ])
-            ], spacing=0),
-            ft.Column([
-                ft.Row([
-                    ft.Text(
-                        value="Heart rate",
-                        size=21,
-                        weight=ft.FontWeight.BOLD
-                    ),
-                    ft.Icon(
-                        name=ft.icons.FAVORITE_ROUNDED
-                    )
-                ]),
-                self.not_measuring_indicator
-            ], spacing=0),
-            ft.Container(
-                height=250,
-                border=ft.border.all(width=1.6, color=ft.colors.OUTLINE),
-                border_radius=14,
-            ),
-            ft.Column([
-                ft.Row([
-                    ft.Text(
-                        value="Blood Oxygen",
-                        size=21,
-                        weight=ft.FontWeight.BOLD
-                    ),
-                    ft.Icon(
-                        name=ft.icons.BLOODTYPE_ROUNDED
-                    )
-                ]),
-                self.not_measuring_indicator
-            ], spacing=0),
-            ft.Container(
-                height=250,
-                border=ft.border.all(width=1.6, color=ft.colors.OUTLINE),
-                border_radius=14,
-            ),
-            ft.Column([
-                ft.Row([
-                    ft.Text(
-                        value="Temperature",
-                        size=21,
-                        weight=ft.FontWeight.BOLD
-                    ),
-                    ft.Icon(
-                        name=ft.icons.HEAT_PUMP
-                    )
-                ]),
-                self._not_measuring_indicator
-            ], spacing=0),
-            ft.Container(
-                height=250,
-                border=ft.border.all(width=1.6, color=ft.colors.OUTLINE),
-                border_radius=14,
-            )
+            
         ]
