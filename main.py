@@ -1,12 +1,12 @@
 import flet as ft
 import json
 
-import pages.data_stream_view
-import pages.join_remote_view
 import pages.main_view
-import pages.session_view
+import pages.thermometer_records
 import pages.settings
-import pages.summary_view
+import pages.bo_records
+import pages.stethoscope_records
+import pages.ecg_records
 
 
 def main(page: ft.Page):
@@ -18,6 +18,7 @@ def main(page: ft.Page):
         settings = json.loads("".join(settings_file.readlines()))
 
         page.theme_mode = settings["theme"].upper()
+        settings_file.close()
 
     page.fonts = {
         "Onest": "./fonts/Onest.ttf"
@@ -29,7 +30,7 @@ def main(page: ft.Page):
             primary="#255CFF",
         ),
         page_transitions=ft.PageTransitionsTheme(
-            windows=ft.PageTransitionTheme.FADE_UPWARDS
+            windows=ft.PageTransitionTheme.CUPERTINO
         ),
         font_family="Onest",
         appbar_theme=ft.AppBarTheme(
@@ -57,6 +58,11 @@ def main(page: ft.Page):
                 weight=ft.FontWeight.W_700,
                 color=ft.colors.ON_BACKGROUND
             )
+        ),
+        card_theme=ft.CardTheme(
+            shape=ft.RoundedRectangleBorder(radius=12),
+            surface_tint_color=ft.colors.BACKGROUND,
+            elevation=5
         )
     )
 
@@ -67,21 +73,21 @@ def main(page: ft.Page):
             pages.main_view.MainView(page)
         )
 
-        if page.route == "/session_view":
+        if page.route == "/thermometer-records":
             page.views.append(
-                pages.session_view.SessionView(page)
+                pages.thermometer_records.ThermometerView(page)
             )
-        elif page.route == "/data_stream_view":
+        elif page.route == "/bo-records":
             page.views.append(
-                pages.data_stream_view.DataStreamView(page)
+                pages.bo_records.OximeterView(page)
             )
-        elif page.route == "/join_remote_session":
+        elif page.route == "/stethoscope-records":
             page.views.append(
-                pages.join_remote_view.RemoteSessionView(page)
+                pages.stethoscope_records.StethoscopeView(page)
             )
-        elif page.route == "/summary_view":
+        elif page.route == "/ecg-records":
             page.views.append(
-                pages.summary_view.SummaryView(page)
+                pages.ecg_records.ECGView(page)
             )
         elif page.route == "/settings":
             page.views.append(
@@ -111,7 +117,7 @@ def main(page: ft.Page):
     page.on_view_pop = on_view_pop
     page.on_keyboard_event = on_keyboard
 
-    page.go("/")
+    page.go("/ecg-records")
 
 
 ft.app(main)
