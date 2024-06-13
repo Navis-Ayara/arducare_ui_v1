@@ -43,6 +43,32 @@ class Settings(ft.View):
                 )
             )
         )
+
+        self.clear_data_dlg = ft.AlertDialog(
+            modal=True,
+            title=ft.Text(
+                value="Are you sure?"
+            ),
+            content=ft.Text(
+                value="This will clear all recordings from the database"
+            ),
+            actions=[
+                ft.TextButton(
+                    style=ft.ButtonStyle(
+                        shape=ft.RoundedRectangleBorder(radius=12)
+                    ),
+                    text="Cancel",
+                    on_click=self.close_dlg
+                ),
+                ft.ElevatedButton(
+                    style=ft.ButtonStyle(
+                        shape=ft.RoundedRectangleBorder(radius=12)
+                    ),
+                    text="Yes"
+                )
+            ],
+            actions_alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+        )
         
 
     def build(self):
@@ -74,7 +100,27 @@ class Settings(ft.View):
                             value="Theme"
                         )
                     ),
-                    ft.Divider()
+                    ft.Divider(),
+                    ft.ListTile(
+                        shape=ft.RoundedRectangleBorder(
+                            radius=12
+                        ),
+                        title=ft.Checkbox(
+                            value="Auto Sync",
+                            label="Auto Sync"
+                        ),
+                        toggle_inputs=True
+                    ),
+                    ft.Divider(),
+                    ft.ListTile(
+                        shape=ft.RoundedRectangleBorder(
+                            radius=12
+                        ),
+                        title=ft.Text(
+                            value="Clear Data",
+                        ),
+                        on_click=self.open_clear_data_dlg
+                    ),
                 ])
             )
         ]
@@ -93,13 +139,37 @@ class Settings(ft.View):
         else:
             self.page.theme_mode = ft.ThemeMode.SYSTEM
 
-        with open("utils/settings.json", "w") as settings_file:
-            settings = {}
+        with open("utils/settings.json", "r") as file:
+            settings = json.loads("".join(file.readlines()))
 
+            file.close()
+
+        with open("utils/settings.json", "w") as settings_file:
             settings["theme"] = e.control.value
 
             settings_file.writelines(
                 json.dumps(settings, indent=4)
             )
 
+            settings_file.close()
+
         self.page.update()
+
+    
+    def open_clear_data_dlg(self, e):
+        self.page.overlay.append(
+            self.clear_data_dlg
+        )
+        self.clear_data_dlg.open = True
+
+        self.page.update()
+
+    def close_dlg(self, e):
+        self.clear_data_dlg.open = False
+
+        self.page.update()
+
+
+"""
+TODO: Implement actual data clearing
+"""
