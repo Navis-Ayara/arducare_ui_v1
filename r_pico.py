@@ -5,4 +5,4 @@ over bluetooth
 
 import socket
 
-s = socket.socket(family=socket.AF_BLUETOOTH)
+s = socket.socket(family=socket.AF_INET)
