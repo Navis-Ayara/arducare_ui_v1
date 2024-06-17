@@ -63,6 +63,11 @@ def main(page: ft.Page):
             shape=ft.RoundedRectangleBorder(radius=12),
             surface_tint_color=ft.colors.BACKGROUND,
             elevation=5
+        ),
+        scrollbar_theme=ft.ScrollbarTheme(
+            thickness=10,
+            radius=2.5,
+            interactive=True
         )
     )
 
@@ -117,7 +122,7 @@ def main(page: ft.Page):
     page.on_view_pop = on_view_pop
     page.on_keyboard_event = on_keyboard
 
-    page.go("/ecg-records")
+    page.go("/")
 
 
 ft.app(main)
