@@ -1,5 +1,4 @@
 import flet as ft
-from utils.controls import SessionCard
 
 
 class MainView(ft.View):
@@ -10,7 +9,7 @@ class MainView(ft.View):
 
         self.route = "/"
 
-        self.scroll = ft.ScrollMode.ALWAYS
+        self.scroll = ft.ScrollMode.AUTO
         self.padding = ft.padding.only(left=10, right=10)
 
     def navigate(self, e):
