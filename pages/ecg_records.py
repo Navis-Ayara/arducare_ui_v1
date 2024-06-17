@@ -1,6 +1,5 @@
 import flet as ft
 
-
 class ECGView(ft.View):
     def __init__(self, page: ft.Page):
         super().__init__()
@@ -32,80 +31,73 @@ class ECGView(ft.View):
             ]
         )
 
-        data_1 = [
-            ft.LineChartData(
-                data_points=[
-                    ft.LineChartDataPoint(0, 3),
-                    ft.LineChartDataPoint(2.6, 2),
-                    ft.LineChartDataPoint(4.9, 5),
-                    ft.LineChartDataPoint(6.8, 3.1),
-                    ft.LineChartDataPoint(8, 4),
-                    ft.LineChartDataPoint(9.5, 3),
-                    ft.LineChartDataPoint(11, 4),
-                ],
-                stroke_width=5,
-                color=ft.colors.CYAN,
-                curved=True,
-                stroke_cap_round=True,
-            )
-        ]
-
         self.controls = [
+            ft.Row(
+                spacing=25,
+                controls=[
+                    ft.Column([
+                        ft.Text(
+                            value="Current",
+                            weight=ft.FontWeight.W_500
+                        ),
+                        ft.Row([
+                            ft.Text(
+                                value="65",
+                                weight=ft.FontWeight.BOLD,
+                                size=24
+                            ),
+                            ft.Text(
+                                value="bpm"
+                            )
+                        ])
+                    ]),
+                    ft.Column([
+                        ft.Text(
+                            value="Resting",
+                            weight=ft.FontWeight.W_500
+                        ),
+                        ft.Row([
+                            ft.Text(
+                                value="67",
+                                weight=ft.FontWeight.BOLD,
+                                size=24
+                            ),
+                            ft.Text(
+                                value="bpm"
+                            )
+                        ])
+                    ]),
+                    ft.Column([
+                        ft.Text(
+                            value="High",
+                            weight=ft.FontWeight.W_500
+                        ),
+                        ft.Row([
+                            ft.Text(
+                                value="180",
+                                weight=ft.FontWeight.BOLD,
+                                size=24
+                            ),
+                            ft.Text(
+                                value="bpm"
+                            )
+                        ])
+                    ])
+                ]
+            ),
             ft.Container(
                 height=320,
                 bgcolor=ft.colors.SECONDARY_CONTAINER,
                 border_radius=24,
                 padding=15,
-                content=ft.LineChart(
-                    horizontal_grid_lines=ft.ChartGridLines(
-                        interval=1, color=ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE), width=1
-                    ),
-                    vertical_grid_lines=ft.ChartGridLines(
-                        interval=1, color=ft.colors.with_opacity(0.2, ft.colors.ON_SURFACE), width=1
-                    ),
-                    left_axis=ft.ChartAxis(
-                        title=ft.Text("Voltage"),
-                        labels=[
-                            ft.ChartAxisLabel(
-                                label=ft.Text("0"),
-                                value=0
-                            ),
-                            ft.ChartAxisLabel(
-                                label=ft.Text("500"),
-                                value=500
-                            ),
-                            ft.ChartAxisLabel(
-                                label=ft.Text("1000"),
-                                value=1000
-                            ),
-                            ft.ChartAxisLabel(
-                                label=ft.Text("1500"),
-                                value=1500
-                            ),
-                            ft.ChartAxisLabel(
-                                label=ft.Text("2000"),
-                                value=2000
-                            )
-                        ]
-                    ),
-                    bottom_axis=ft.ChartAxis(
-                        title=ft.Text("Time")
-                    ),
-                    data_series=[
-                        ft.LineChartData(
-                            color=ft.colors.CYAN,
-                            data_points=[
-                                ft.LineChartDataPoint(0*1000, 3.44*1000),
-                                ft.LineChartDataPoint(2.6*1000, 3.44*1000),
-                                ft.LineChartDataPoint(4.9*1000, 3.44*1000),
-                                ft.LineChartDataPoint(6.8*1000, 3.44*1000),
-                                ft.LineChartDataPoint(8*1000, 3.44*1000),
-                                ft.LineChartDataPoint(9.5*1000, 3.44*1000),
-                                ft.LineChartDataPoint(11*1000, 3.44*1000),ft.LineChartDataPoint(0*1000, 500*1000),
-                                ft.LineChartDataPoint(540*1000, 453*1000),
-                            ]
-                        )
-                    ]
+            ),
+            ft.ListView([
+                ft.ListTile(
+                    height=140,
+                    on_click=lambda _: print("Loading Record..."),
+                    title=ft.Text(
+                        value="Locked"
+                    )
                 )
-            )
+            for i in range(30)], expand=True)
         ]
