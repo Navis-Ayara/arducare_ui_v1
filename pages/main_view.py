@@ -1,5 +1,12 @@
 import flet as ft
 
+import os
+
+sounds = os.listdir("data/sounds")
+
+def print_sounds():
+    return len(sounds)
+
 
 class MainView(ft.View):
     def __init__(self, page: ft.Page):
@@ -108,7 +115,7 @@ class MainView(ft.View):
                                     value="Stethoscope Sounds"
                                 ),
                                 subtitle=ft.Text(
-                                    value=f"{str(0)} Sounds"
+                                    value=f"{str(print_sounds())} Sounds"
                                 ),
                                 on_click=lambda _: self.page.go("/stethoscope-records"),
                                 height=120
