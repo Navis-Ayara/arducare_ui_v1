@@ -16,13 +16,12 @@ def main(page: ft.Page):
 
     with open("utils/settings.json", "r") as settings_file:
         settings = json.loads("".join(settings_file.readlines()))
-
         page.theme_mode = settings["theme"].upper()
         settings_file.close()
 
     page.fonts = {
         "Onest": "./fonts/Onest.ttf"
-    }
+    }   
 
     page.theme = ft.Theme(
         color_scheme_seed="#255CFF",
@@ -71,7 +70,7 @@ def main(page: ft.Page):
         )
     )
 
-    
+
     def on_route_change(route):
         page.views.clear()
         page.views.append(
@@ -100,7 +99,6 @@ def main(page: ft.Page):
             )
 
         page.update()
-
 
     
     def on_keyboard(e: ft.KeyboardEvent):

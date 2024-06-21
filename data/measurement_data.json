@@ -1,14 +1,6 @@
 {
-    "thermometer": {
-        
-    },
-    "oximeter": {
-
-    },
-    "stethoscope": {
-        
-    },
-    "electrocardiogram": {
-        
-    }
+    "thermometer": {},
+    "oximeter": {},
+    "stethoscope": {},
+    "electrocardiogram": {}
 }

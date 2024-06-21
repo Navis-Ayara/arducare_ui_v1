@@ -1,6 +1,7 @@
 import flet as ft
-
+import json
 import os
+        
 
 sounds = os.listdir("data/sounds")
 
@@ -15,24 +16,46 @@ class MainView(ft.View):
         self.page = page
 
         self.route = "/"
-
-        self.scroll = ft.ScrollMode.AUTO
         self.padding = ft.padding.only(left=10, right=10)
+
+        with open("data/measurement_data.json", "r") as data_file:
+            try:
+                self.last_thermo_reading = [i for i in json.loads("".join(data_file.readlines()))["thermometer"].values()][0]
+            except json.JSONDecodeError:
+                self.last_thermo_reading = None
+            except IndexError:
+                self.last_thermo_reading = None
+            try:
+                self.last_oximeter_reading = [i for i in json.loads("".join(data_file.readlines()))["oximeter"].values()][0]
+            except json.JSONDecodeError:
+                self.last_oximeter_reading = None
+            except IndexError:
+                self.last_thermo_reading = None
+            try:
+                self.last_electrocardiogram_reading = [i for i in json.loads("".join(data_file.readlines()))["electrocardiogram"].values()][0]
+            except json.JSONDecodeError:
+                self.last_electrocardiogram_reading = None
+            except IndexError:
+                self.last_electrocardiogram_reading = None
+
 
     def navigate(self, e):
         match e.control.selected_index:
             case 0:
                 self.page.go("/settings")
 
+
     def open_drawer(self, e):
         self.drawer.open = True
 
         self.page.update()
 
+
     def close_drawer(self, e):
         self.dlg.open = False
         
         self.page.update()
+        
 
     def build(self):
         self.drawer = ft.NavigationDrawer(
@@ -88,6 +111,8 @@ class MainView(ft.View):
                                 ),
                                 leading=ft.Image(
                                     src="icons/heart-rate.svg",
+                                    width=40,
+                                    height=40,
                                     color=ft.colors.ON_BACKGROUND,
                                     fit=ft.ImageFit.COVER
                                 ),
@@ -95,7 +120,7 @@ class MainView(ft.View):
                                     value="Heart Rate (ECG)"
                                 ),
                                 subtitle=ft.Text(
-                                    value="Some past data here"
+                                    value="No data" if self.last_electrocardiogram_reading == None else str(self.last_electrocardiogram_reading)
                                 ),
                                 on_click=lambda _: self.page.go("/ecg-records"),
                                 height=120
@@ -108,6 +133,8 @@ class MainView(ft.View):
                                 ),
                                 leading=ft.Image(
                                     src="icons/stethoscope.svg",
+                                    width=40,
+                                    height=40,
                                     color=ft.colors.ON_BACKGROUND,
                                     fit=ft.ImageFit.COVER
                                 ),
@@ -128,6 +155,8 @@ class MainView(ft.View):
                                 ),
                                 leading=ft.Image(
                                     src="icons/thermometer.svg",
+                                    width=40,
+                                    height=40,
                                     color=ft.colors.ON_BACKGROUND,
                                     fit=ft.ImageFit.COVER
                                 ),
@@ -135,7 +164,7 @@ class MainView(ft.View):
                                     value="Temperature"
                                 ),
                                 subtitle=ft.Text(
-                                    value="Some past data here"
+                                    value="No data" if self.last_thermo_reading == None else f"{str(self.last_thermo_reading)}°C"
                                 ),
                                 on_click=lambda _: self.page.go("/thermometer-records"),
                                 height=120
@@ -148,6 +177,8 @@ class MainView(ft.View):
                                 ),
                                 leading=ft.Image(
                                     src="icons/blood.svg",
+                                    width=40,
+                                    height=40,
                                     color=ft.colors.ON_BACKGROUND,
                                     fit=ft.ImageFit.COVER
                                 ),
@@ -155,7 +186,7 @@ class MainView(ft.View):
                                     value="Blood Oxygen"
                                 ),
                                 subtitle=ft.Text(
-                                    value="Some past data here"
+                                    value="No data" if self.last_oximeter_reading == None else self.last_oximeter_reading
                                 ),
                                 on_click=lambda _: self.page.go("/bo-records"),
                                 height=120

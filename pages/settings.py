@@ -1,5 +1,29 @@
 import flet as ft
+import subprocess
+import os
 import json
+
+with open("utils/settings.json", "r") as file:
+    settings = json.loads("".join(file.readlines()))
+    file.close()
+
+
+with open("data/measurement_data.json", "r") as data_file:
+    data = {
+        "thermometer": {
+
+        },
+        "oximeter": {
+
+        },
+        "stethoscope": {
+
+        },
+        "electrocardiogram": {
+
+        }
+    }
+    data_file.close()
 
 
 class Settings(ft.View):
@@ -14,10 +38,16 @@ class Settings(ft.View):
         self.vertical_alignment = ft.MainAxisAlignment.END
 
         self.padding = ft.padding.only(
-            left=100,
-            right=100,
+            left=10,
+            right=10,
             top=50
         )
+
+        self.sounds = []
+
+        for s in os.listdir("data/sounds"):
+            if s.endswith(".mp3"):
+                self.sounds.append(s)
 
         self.theme_dlg = ft.AlertDialog(
             modal=False,
@@ -64,11 +94,18 @@ class Settings(ft.View):
                     style=ft.ButtonStyle(
                         shape=ft.RoundedRectangleBorder(radius=12)
                     ),
-                    text="Yes"
+                    text="Yes",
+                    on_click=self.clear_data
                 )
             ],
             actions_alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
+
+        self.sync_box = ft.Checkbox(
+                on_change=self.change_sync_status,
+                value=settings["autosync"],
+                label="Auto Sync"
+            )
         
 
     def build(self):
@@ -105,10 +142,7 @@ class Settings(ft.View):
                         shape=ft.RoundedRectangleBorder(
                             radius=12
                         ),
-                        title=ft.Checkbox(
-                            value="Auto Sync",
-                            label="Auto Sync"
-                        ),
+                        title=self.sync_box,
                         toggle_inputs=True
                     ),
                     ft.Divider(),
@@ -124,6 +158,7 @@ class Settings(ft.View):
                 ])
             )
         ]
+
 
     def open_theme_picker(self, e):
         self.page.overlay.append(self.theme_dlg)
@@ -155,6 +190,19 @@ class Settings(ft.View):
 
         self.page.update()
 
+
+    def change_sync_status(self, e):
+        with open("utils/settings.json", "w") as settings_file:
+            settings["autosync"] = str(e.control.value)
+
+            settings_file.writelines(
+                json.dumps(settings, indent=4)
+            )
+
+            settings_file.close()
+
+        self.page.update()
+
     
     def open_clear_data_dlg(self, e):
         self.page.overlay.append(
@@ -164,10 +212,22 @@ class Settings(ft.View):
 
         self.page.update()
 
+
     def close_dlg(self, e):
         self.clear_data_dlg.open = False
 
         self.page.update()
+
+    def clear_data(self, e):
+        for i in range(len(self.sounds)):
+            os.remove(f"data/sounds/{self.sounds[i]}")
+        with open("data/measurement_data.json", "w") as data_file:
+            data_file.writelines(json.dumps(data, indent=4))
+            data_file.close()
+        self.clear_data_dlg.open = False
+
+        self.page.update()
+
 
 
 """

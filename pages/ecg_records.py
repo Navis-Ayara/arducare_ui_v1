@@ -7,6 +7,7 @@ class ECGView(ft.View):
         self.page = page
 
         self.route = "/ecg-records"
+        
 
     def build(self):
         self.appbar = ft.AppBar(

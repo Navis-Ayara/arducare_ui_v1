@@ -1,5 +1,9 @@
 import flet as ft
+import json
 
+with open("data/measurement_data.json", "r") as data_file:
+    bo_records = json.loads("".join(data_file.readlines()))
+    data_file.close()
 
 class OximeterView(ft.View):
     def __init__(self, page: ft.Page):
